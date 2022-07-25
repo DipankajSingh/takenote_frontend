@@ -1,5 +1,5 @@
 'use strict';
-import { $, GiveElement as CreateElm, addKeyEvent, codeHTML } from "./utils.js";
+import { $, GiveElement as CreateElm, addKeyEvent, codeHTML, insertSnippet as insert } from "./utils.js";
 const mContainer = CreateElm('div', 'main-container')
 
 mContainer.append(
@@ -55,7 +55,7 @@ function addOrUpdate() {
         '*/i*': '</i>',
         '*i*': '<i>'
     }, TextFBody.value)
-    noteBody.value = htm.slice(1, htm.length - 1)
+    noteBody.innerHTML = htm.slice(1, htm.length - 1)
     noteCard.append(noteText, noteBody)
     mChild[0].lastChild.appendChild(noteCard)
     NoteAddWindow.remove()
@@ -73,27 +73,17 @@ const changeClr = () => {
 }
 bdrClr.lastChild.addEventListener('change', changeClr)
 
-// this function will insert B and I snippet to textarea
-function insert(Snippet = String()) {
-    let [start, end] = [TextFBody.selectionStart, TextFBody.selectionEnd]
-    let text = TextFBody.value
-    let [before, after] = [text.substring(0, start), text.substring(end, text.lenght)]
-    TextFBody.value = (before + Snippet + after)
-    TextFBody.focus()
-    TextFBody.setSelectionRange(start + 3, start + 3)
-}
-
 // bold button
 const boldBtn = CreateElm('button', 'bold-btn')
 boldBtn.addEventListener('click', () => {
-    insert('*b* *b*')
+    insert({ open: '*b*', close: '*/b*' }, 'keep spaces!', TextFBody)
 })
 boldBtn.innerHTML = '<img src="./icons/bold.svg">'
 
 // itelic button
 const itelicBtn = CreateElm('button', 'itelic-btn')
 itelicBtn.addEventListener('click', () => {
-    insert('*i* *i*')
+    insert({ open: '*b*', close: '*/b*' }, 'keep spaces!', TextFBody)
 })
 itelicBtn.innerHTML = '<img src="./icons/italic.svg">'
 
