@@ -270,7 +270,6 @@ body {
     top: 0;
     z-index: 5;
     background-color: var(--primary-color-5);
-
 }
 
 .add-note-btn {
@@ -309,7 +308,6 @@ body {
     z-index: 4;
 }
 
-
 .NoteAddWindow {
     position: relative;
     display: inline-block;
@@ -334,10 +332,6 @@ body {
     border-top-right-radius: .5rem;
     background-color: var(--primary-color-5);
 }
-
-
-
-
 
 .back-btn {
     display: flex;
