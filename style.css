@@ -47,6 +47,7 @@ body {
 .navbar,
 .main-container {
     transition: width 300ms;
+    overflow: hidden;
 }
 
 .navbar>span {
@@ -523,11 +524,12 @@ body {
 }
 
 .note-card {
+    position: relative;
     height: 12em;
     width: 15em;
     margin: 5px;
     border-radius: var(--gap);
-    border: 1px solid var(--primary-color-1);
+    border: 1px solid;
     flex-grow: 1;
     padding: 5px;
     overflow: hidden;
@@ -551,6 +553,19 @@ body {
 /* separet media quary in a new css files */
 
 
+.important::after {
+    content: 'Important';
+    color: var(--primary-color-1);
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    border-top-left-radius: .5em;
+    margin: 0;
+    font-family: Courier, monospace;
+    font-weight: 800;
+    padding: 2px 15px;
+    background-color: #fc4747;
+}
 
 @media only screen and (max-width:720px) {
     .navbar {

@@ -12,7 +12,6 @@ mContainer.append(
 const mChild = mContainer.childNodes
 const navSelData = $('.navbar ul li')
 const arrElm = []
-
 for (let i = 0; i < mChild.length; i++) {
     mChild[i].appendChild(CreateElm('nav', 'nav-headings'))
     mChild[i].appendChild(CreateElm('div', 'content-container'))
@@ -24,6 +23,7 @@ for (let i = 0; i < mChild.length; i++) {
 for (let i = 0; i < arrElm.length; i++) {
     arrElm[i].appendChild(CreateElm('h3', 'heading'));
 }
+
 
 arrElm[0].firstChild.innerText = 'Notes'
 const addNoteBtn = CreateElm('button', 'add-note-btn')
@@ -38,35 +38,50 @@ const N_A_W_Nav = CreateElm('nav', 'n-a-w-nav')
 // and adding functionalities to back (<--) button
 const backBtn = CreateElm('button', 'back-btn')
 backBtn.innerHTML = '<span>&#10140</span>'
+// seting importent
+let important = false
+
 
 // adding events to back button 
 // add new note when clicking on back button
-backBtn.addEventListener('click', addOrUpdate)
+backBtn.addEventListener('click', () => {
+    addOrUpdate(important)
+})
 
 // This funtion can update or add a new note to database also
-function addOrUpdate() {
-    const noteCard = CreateElm('div', 'note-card')
+function addOrUpdate(imp = false) {
+    if (TextFBody.value == '' && TextFTitle.innerText == '') {
+        NoteAddWindow.remove()
+        return
+    }
+
+    const noteCard = CreateElm('div', imp == true ? 'note-card important' : 'note-card')
+    noteCard.style.borderColor = important == true ? '#fc4747' : bdrClr.lastChild.value
     const noteText = CreateElm('h4')
     const noteBody = CreateElm('p')
     noteText.innerText = TextFTitle.innerText
+    // TODO - make perfect bold and itelic buttons to work
     const htm = codeHTML({
         '*b*': '<b>',
         '*/b*': '</b>',
         '*/i*': '</i>',
         '*i*': '<i>'
     }, TextFBody.value)
-    noteBody.innerHTML = htm.slice(1, htm.length - 1)
+    noteBody.textContent = htm.slice(1, htm.length - 1)
     noteCard.append(noteText, noteBody)
     mChild[0].lastChild.appendChild(noteCard)
     NoteAddWindow.remove()
 }
 
+// this function will mark a note important
+function markImportant() {
+    console.log('imp')
+}
 // adding buttons to nav
 const bdrClr = CreateElm('div', 'bdrClr')
 
 bdrClr.innerHTML = `<label for="clrInput"></label>
 <input type="color" name="color" id="clrInput">`
-
 // applying color on input change
 const changeClr = () => {
     bdrClr.firstChild.style.backgroundColor = bdrClr.lastChild.value
@@ -83,7 +98,7 @@ boldBtn.innerHTML = '<img src="./icons/bold.svg">'
 // itelic button
 const itelicBtn = CreateElm('button', 'itelic-btn')
 itelicBtn.addEventListener('click', () => {
-    insert({ open: '*b*', close: '*/b*' }, 'keep spaces!', TextFBody)
+    insert({ open: '*i*', close: '*/i*' }, 'keep spaces!', TextFBody)
 })
 itelicBtn.innerHTML = '<img src="./icons/italic.svg">'
 
@@ -106,19 +121,27 @@ function rEvent(e) {
         }
     }
 }
+function close() {
+    delete optionDiv.dataset.visible
+    while (optionDiv.firstChild) {
+        optionDiv.removeChild(optionDiv.firstChild)
+    }
+}
 addEventListener('click', rEvent)
 iForOptions.addEventListener('click', () => {
+
     if (optionDiv.dataset.visible == null) {
         optionDiv.dataset.visible = 'true'
         //block of code
-        let deleteBtn = CreateElm('button', undefined, 'Delete')
-        let importantBtn = CreateElm('button', undefined, 'Mark Important!')
+        const deleteBtn = CreateElm('button', undefined, 'Delete')
+        const importantBtn = CreateElm('button', undefined, 'Mark Important!')
+        importantBtn.addEventListener('click', () => {
+            important = true
+            close()
+        })
         optionDiv.append(deleteBtn, importantBtn)
     } else {
-        delete optionDiv.dataset.visible
-        while (optionDiv.firstChild) {
-            optionDiv.removeChild(optionDiv.firstChild)
-        }
+        close()
     }
 })
 
@@ -147,10 +170,10 @@ const addNote = () => {
 
 
 
-
+    important = false
     document.body.appendChild(NoteAddWindow)
 }
-addNote()
+// addNote()
 // opening Note add window on "alt+w" pressing
 addKeyEvent('w', () => (!$('.NoteAddWindow')) &&
     document.body.appendChild(NoteAddWindow))
