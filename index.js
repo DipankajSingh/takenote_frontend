@@ -1,6 +1,11 @@
 'use strict';
 import { $, GiveElement as CreateElm, addKeyEvent, codeHTML, insertSnippet as insert } from "./utils.js";
 const mContainer = CreateElm('div', 'main-container')
+const textFieldCon = CreateElm('div', 'text-field-container')
+const TextFTitle = CreateElm('span')
+const TextFBody = CreateElm('textarea')
+const deleteBtn = CreateElm('button', undefined, 'Delete')
+const importantBtn = CreateElm('button', 'imp', 'Mark Important!')
 
 mContainer.append(
     CreateElm('div', 'main-child-container note-container'),
@@ -48,15 +53,36 @@ backBtn.addEventListener('click', () => {
     addOrUpdate(important)
 })
 
+// this will delete note
+deleteBtn.addEventListener('click', () => {
+    TextFTitle.textContent = ''
+    TextFBody.value = ''
+    NoteAddWindow.remove()
+})
 // This funtion can update or add a new note to database also
 function addOrUpdate(imp = false) {
     if (TextFBody.value == '' && TextFTitle.innerText == '') {
         NoteAddWindow.remove()
         return
     }
-
     const noteCard = CreateElm('div', imp == true ? 'note-card important' : 'note-card')
+    noteCard.addEventListener('click', (e) => { noteClick(e) })
+
+    // This noteClick function should retrive existing title
+    // and body data
+    function noteClick(e) {
+        addNote()
+        const [title, body] = [e.target.firstChild.textContent, e.target.lastChild.textContent]
+        TextFTitle.textContent = title
+        TextFBody.value = body
+        if (noteCard.classList[1]) {
+            importantBtn.click()
+        }
+        e.target.remove()
+    }
     noteCard.style.borderColor = important == true ? '#fc4747' : bdrClr.lastChild.value
+
+
     const noteText = CreateElm('h4')
     const noteBody = CreateElm('p')
     noteText.innerText = TextFTitle.innerText
@@ -70,8 +96,16 @@ function addOrUpdate(imp = false) {
     noteBody.textContent = htm.slice(1, htm.length - 1)
     noteCard.append(noteText, noteBody)
     mChild[0].lastChild.appendChild(noteCard)
+    TextFBody.value = ''
+    TextFTitle.textContent = ''
     NoteAddWindow.remove()
 }
+
+//this will mark as important
+importantBtn.addEventListener('click', () => {
+    important = true
+    close()
+})
 
 // this function will mark a note important
 function markImportant() {
@@ -127,18 +161,15 @@ function close() {
         optionDiv.removeChild(optionDiv.firstChild)
     }
 }
+
 addEventListener('click', rEvent)
 iForOptions.addEventListener('click', () => {
 
     if (optionDiv.dataset.visible == null) {
         optionDiv.dataset.visible = 'true'
         //block of code
-        const deleteBtn = CreateElm('button', undefined, 'Delete')
-        const importantBtn = CreateElm('button', undefined, 'Mark Important!')
-        importantBtn.addEventListener('click', () => {
-            important = true
-            close()
-        })
+
+
         optionDiv.append(deleteBtn, importantBtn)
     } else {
         close()
@@ -154,18 +185,16 @@ N_A_W_Nav.append(backBtn, leftAlignedDiv)
 
 //adding nav and text fields to NAW
 // creating fields
-const textFieldCon = CreateElm('div', 'text-field-container')
-const TextFTitle = CreateElm('span')
+
 TextFTitle.setAttribute('role', 'textbox')
 TextFTitle.contentEditable = true
-const TextFBody = CreateElm('textarea')
 TextFBody.placeholder = 'Note'
 textFieldCon.append(TextFTitle, TextFBody)
 // expanding text fields acording to text height
 
 
 NoteAddWindow.append(N_A_W_Nav, textFieldCon)
-const addNote = () => {
+function addNote() {
 
 
 
