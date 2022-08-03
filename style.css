@@ -28,6 +28,125 @@ body {
     overflow: hidden;
 }
 
+.login-page,
+.signup-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    color: var(--primary-color-1);
+    font-family: monospace;
+    transition: width 300ms;
+}
+
+.login-page .form,
+.signup-page .form {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+
+}
+
+.email-area,
+.password-area,
+.name-area {
+    width: 80%;
+    max-width: 400px;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    font-family: inherit;
+    font: bold;
+}
+
+.login-button {
+    display: flex;
+}
+
+.email-area label,
+.password-area label,
+.name-area label {
+    font-family: inherit;
+    font: bolder;
+    font-size: large;
+    color: inherit;
+}
+
+.email-area input,
+.password-area input,
+.name-area input {
+    width: 70%;
+    height: 2rem;
+    outline: none;
+    border: none;
+    border-radius: .4em;
+    padding-left: 10px;
+}
+
+.login-page .buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+}
+
+.login-page .buttons button:nth-child(1),
+.signup-btn,
+.login-btn {
+    background-color: transparent;
+    color: rgb(80, 121, 233);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-page .buttons button:nth-child(1):hover,
+.signup-btn:hover,
+.login-btn:hover {
+    text-decoration: underline;
+}
+
+.login-page .buttons button:nth-child(2),
+.sign-up-btn {
+    background-color: var(--primary-color-1);
+    color: var(--primary-color-5);
+    border: none;
+    cursor: pointer;
+    padding: 4px 10px;
+    font-weight: bolder;
+    font-size: large;
+    border-radius: .2em;
+}
+
+.login-page .buttons button:nth-child(2):hover,
+.sign-up-btn:hover {
+    background-color: #1bd741;
+    color: var(--primary-color-1);
+}
+
+.login-page .img,
+.signup-page .img {
+    height: 5rem;
+    width: 5rem;
+    background-color: var(--primary-color-1);
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-page .img img,
+.signup-page .img img {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    height: 100%;
+    width: 100%;
+}
+
 .navbar {
     background-color: var(--primary-color-5);
     position: absolute;
@@ -223,10 +342,15 @@ body {
 }
 
 .main-container {
+    display: inline-block;
+}
+
+.main-container,
+.login-page,
+.signup-page {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    display: inline-block;
     right: 5px;
     height: 99vh;
     width: calc(100vw - 3.7em);
@@ -235,7 +359,10 @@ body {
 }
 
 .navbar[data-toggled='true']+script+.main-container,
-.navbar[data-toggled='true']+script+nav+.main-container {
+.navbar[data-toggled='true']+script+nav+.main-container,
+.navbar[data-toggled='true']+script+.login-page,
+.navbar[data-toggled='true']+script+nav+.login-page,
+.navbar[data-toggled='true']+.login-page {
     width: calc(100vw - 11.2em);
 }
 
@@ -281,7 +408,6 @@ body {
     padding: 2px;
     border-radius: .5em;
     cursor: pointer;
-
 }
 
 .add-note-btn:hover {
@@ -349,7 +475,8 @@ body {
 }
 
 .back-btn:hover {
-    transition: color 150ms ease-in, background-color 150ms ease-in;
+    transition: color 150ms ease-in;
+    background-color: 150ms ease-in;
     cursor: pointer;
     color: var(--primary-color-5);
     background-color: var(--primary-color-1);
@@ -567,6 +694,21 @@ body {
     background-color: #fc4747;
 }
 
+.joke-container>.content-container {
+    text-align: center;
+    height: 100%;
+}
+
+.joke-card {
+    color: white;
+    width: 15rem;
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid wheat;
+    border-radius: .4rem;
+    padding: 3px;
+}
+
 @media only screen and (max-width:720px) {
     .navbar {
         flex-direction: row;
@@ -624,7 +766,9 @@ body {
         cursor: pointer;
     }
 
-    .main-container {
+    .main-container,
+    .login-page,
+    .signup-page {
         left: 50%;
         transform: translateX(-50%) translateY(0);
         top: 3px;
@@ -634,7 +778,8 @@ body {
 
     /* on production remember to remove script sibling */
 
-    .navbar[data-toggled='true']+script+.main-container {
+    .navbar[data-toggled='true']+script+.main-container,
+    .navbar[data-toggled='true']+script+.login-page {
         width: 99vw;
     }
 }
