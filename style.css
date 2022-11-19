@@ -778,8 +778,8 @@ body {
 
     /* on production remember to remove script sibling */
 
-    .navbar[data-toggled='true']+script+.main-container,
-    .navbar[data-toggled='true']+script+.login-page {
+    .navbar[data-toggled='true']+.main-container,
+    .navbar[data-toggled='true']+.login-page {
         width: 99vw;
     }
 }
